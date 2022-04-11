@@ -8,9 +8,6 @@
                 Nombre
               </th>
               <th>
-                Celular
-              </th>
-              <th>
                 Email
               </th>
               <th>
@@ -24,7 +21,6 @@
               :key="item.name"
             >
               <td>{{ item.nombre }}</td>
-              <td>{{ item.celular }}</td>
               <td>{{ item.email }}</td>
               <td>{{ item.suscripto }}</td>
             </tr>
@@ -35,15 +31,8 @@
 
 <script>
   export default {
-    data () {
-      return {
-        }
-        
-    },
     props:{
         lista: Array
-    },
-    methods: {
-      }
+    }
   }
 </script>

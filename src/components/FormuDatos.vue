@@ -1,12 +1,12 @@
 <template>
-  <v-form
+    <v-form
     ref="form"
     v-model="valid"
     lazy-validation
     @submit.prevent="onSubmit"
   >
     <v-text-field
-      v-model="name"
+      v-model="nombre"
       :counter="20"
       :rules="nameRules"
       label="Name"
@@ -45,34 +45,37 @@
   <tabla-datos :lista="listaUsu"/>
 </template>
 
-
-
 <script>
-  import TablaDatos from './TablaDatos.vue';
-  export default {
+import TablaDatos from './TablaDatos.vue';
+import {ref,reactive} from 'vue'
+export default {
     components: {
       TablaDatos
     },
-    data: () => ({
-      valid: true,
-      name: '',
-      nameRules: [
+    setup(){
+      let valid= true
+      let nombre=ref('')
+      const nameRules= reactive([
         v => !!v || 'Name is required',
         v => v.length <= 20 || 'Name must be less than 20 characters',
         v => /^[A-Za-z]+([ A-Za-z])/.test(v) || 'Solo letras'
-      ],
-      email: '',
-      emailRules: [
+      ])
+      let email= ref('')
+      const emailRules= reactive([
         v => !!v || 'E-mail is required',
         v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
-      ],
-      checkbox: false,
-      listaUsu:JSON.parse(localStorage.getItem("usuarios"))||[],
-    }),
-
-    methods: {
+      ])
+      let checkbox= ref(false)
+      let listaUsu=reactive(JSON.parse(localStorage.getItem("usuarios"))||[])
+      //sin coma antes del return
+      return{
+        valid,nombre,nameRules, email,emailRules,checkbox,listaUsu
+      }
+    },
+    methods:{
       validate () {
         this.$refs.form.validate()
+                this.valid=true;
       },
       reset () {
         this.$refs.form.reset();
@@ -81,16 +84,15 @@
       onSubmit(){
         console.log("enviando")
         const nuevoUsu={
-              nombre:this.name,
-              celular:this.phoneNumber,
+              nombre:this.nombre,
               email:this.email,
-              suscripto:this.checkbox==this.checkbox
+              suscripto:this.checkbox==true
           };
         this.listaUsu.push(nuevoUsu);
         localStorage.setItem("usuarios",JSON.stringify(this.listaUsu));
         this.valid=true;
       }
-    },
-  }
-</script>
+    }
 
+}
+</script>
